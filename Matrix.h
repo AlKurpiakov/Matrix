@@ -18,9 +18,7 @@ public:
     Matrix(const Vector<Vector<T>>& vv):Vector<Vector<T>>(vv) {}
 
     Matrix& operator=(const Matrix& mt){
-        for(int i = 0; i < mt._size; i++)
-            this[i]->Vector<T>::operator=(mt[i]);
-        return *this;
+        return Vector<Vector<T>>::operator=(mt);
     }
 
     Matrix operator+(const Matrix& mt){
