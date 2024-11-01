@@ -12,16 +12,21 @@ public:
             _array[i] = Vector<T>(n-i,i);
         }
     }
-    //
+    
     Matrix(const Matrix& mt):Vector<Vector<T>>(mt) {}
 
-    Matrix(const Vector<Vector<T>>& vv):Vector<Vector<T>>(mt){}
-    Matrix& operator=(const Matrix& mt);
+    Matrix(const Vector<Vector<T>>& vv):Vector<Vector<T>>(vv) {}
+
+    Matrix& operator=(const Matrix& mt){
+
+    }
+
     Matrix operator+(const Matrix& mt){
         return Vector<Vector<T>>::operator+(mt);
     }
     Matrix operator-(const Matrix& mt){
         return Vector<Vector<T>>::operator-(mt);
     }
+
     Matrix operator*(const Matrix& mt);
 };
