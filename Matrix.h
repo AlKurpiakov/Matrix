@@ -17,6 +17,7 @@ public:
 
     Matrix(const Vector<Vector<T>>& vv):Vector<Vector<T>>(vv) {}
 
+    
     Matrix& operator=(const Matrix& mt){
         return Vector<Vector<T>>::operator=(mt);
     }
@@ -28,5 +29,40 @@ public:
         return Vector<Vector<T>>::operator-(mt);
     }
 
-    Matrix operator*(const Matrix& mt);
+    Matrix operator*(const Matrix& mt){    
+        Matrix res(this->_size);
+        for (int i = 0; i < this->_size; ++i) {
+            for (int j = i; j < this->_size; ++j) { 
+                for (int k = i; k <= j; ++k) {
+                   res[i][j] += mt[i][k] * this[k][j];
+                }
+            }
+        }
+        return res;
+    }
+
+
+    friend istream& operator>>(istream& in, Matrix& mt)
+    {
+        for (int i = 0; i < mt._size; i++)
+            for (int j = 0; j < mt._size; j++){
+                in >> mt[i][j];
+                if (i > j && mt[i][j] != 0){
+                    throw "WRONG MATRIX";
+                }
+            }
+        return in;
+    }
+    
+    friend ostream& operator<<(ostream& os, const Matrix& mt)
+    {
+        for (int i = 0; i < mt._size; i++){
+            os << "|" ;
+            os << setw(mt._size * 6) << left;
+            for (int j = 0; j < mt._size; j++)
+                os << mt._array[i][j];
+            os << "|" << endl;
+        }
+        return os;
+    }
 };

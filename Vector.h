@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <vector>
+using namespace std;
 
 template <class T>
 class Vector{
@@ -20,33 +21,28 @@ public:
     
     }
 
-    Vector(const Vector& tmp){
-        _size = tmp._size;
-        _startIndex = tmp._startIndex;
-        _array = new T [tmp._size];
-        for(int i = 0; i < tmp._size; i++){
-            _array[i] = tmp._array[i] ;
+    Vector(size_t size) : _size(size), _startIndex(0){
+        _array = new T[_size];
+        for (int i = 0; i < _size; i++){
+            _array[i] = 0;
+        }
+    }
+    Vector(size_t size, size_t startIndex, T* array) : _size(size), _array(new T[size]), _startIndex(startIndex){
+        for (int i = 0; i < _size; i++){
+            _array[i] = array[i];
         }
     }
 
-    Vector(Vector&& tmp){
-    
-        if (!(this == &tmp))
-        {
-            delete[] _array;
-        
-            _array = tmp._array;
-            _size = tmp._size;
+    Vector(const Vector<T>& tmp) : _size(tmp._size), _array(new T[tmp._size]){
+        for (int i = 0; i < _size; i++){
+            _array[i] = tmp._array[i];
+        }
+    }
 
-            delete[] tmp._array;
-            tmp._array = nullptr;
-            tmp._size = 0;
-        }
-        else {
-            delete[] tmp._array;
-            tmp._array = nullptr;
-            tmp._size = 0;
-        }
+    Vector(Vector<T>&& vec) noexcept : _array(vec._array), _size(vec._size), _startIndex(vec._startIndex) {
+        vec._array = nullptr;
+        vec._size = 0;
+        vec._startIndex = 0;
     }
 
     ~Vector(){
@@ -62,10 +58,6 @@ public:
         return _startIndex;
     }
 
-    T& operator[](size_t i){
-        return _array[i];
-    }
-
     T& GetElem(size_t i){
         if (i >= _size){
             throw "Out of range";
@@ -73,8 +65,20 @@ public:
         return _array[i];
     }
 
+    T& operator[](size_t i){
+        return _array[i];
+    }
+
     Vector& operator=(const Vector& tmp){
-        
+        _size = vec._size;
+        _startIndex = vec._startIndex;
+        delete [] _array;
+        _array = nullptr;
+        _array = new T[_size];
+        for (int i = 0; i < _size; i++){
+            _array[i] = vec._array[i];
+        }
+        return *this;
     }
 
     bool operator==(const Vector& tmp){
@@ -100,14 +104,33 @@ public:
     }
 
     Vector operator*(const T& tmp) const{
-        Vector ans(*this);
+        Vector res(*this);
         for (size_t i = 0; i < _size; i++)
-            ans[i] *= tmp;
-        return ans;
+            res[i] *= tmp;
+        return res;
     }
 
-    Vector operator+(const Vector& tmp) const;
-    Vector operator-(const Vector& tmp) const;
-    T operator*(const Vector& tmp) const;
+    Vector operator+(const Vector& tmp) const;//?
+    Vector operator-(const Vector& tmp) const;//?
+
+    T operator*(const Vector& tmp) {
+        Vector res(*this);
+        for (int i =0 ; i < _size; i++)
+            res[i] *= tmp;
+        return res;
+    }
+
+    friend istream& operator>>(istream& in, Vector& vec){
+        for (int i = 0; i < vec._size; i++)
+            in >> vec._array[i];
+        return in;
+    }
     
+    friend ostream& operator<<(ostream& os, const Vector& tmp){
+        os << "(";
+        for (int i = 0; i < tmp._size; i++)
+            os << tmp._array[i] << " ";
+        os << " )" << endl;
+        return os;
+    }
 };
