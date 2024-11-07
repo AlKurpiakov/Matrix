@@ -127,10 +127,11 @@ public:
     }
     
     friend ostream& operator<<(ostream& os, const Vector& tmp){
-        os << "(";
-        for (int i = 0; i < tmp._size; i++)
-            os << tmp._array[i] << " ";
-        os << " )" << endl;
+        os << "|" ;
+        os << setw(tmp._size * 6) << left;
+        for (int j = 0; j < mt._size; j++)
+            os << tmp._array[j];
+        os << "|" << endl;
         return os;
     }
 };
