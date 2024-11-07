@@ -57,11 +57,7 @@ public:
     friend ostream& operator<<(ostream& os, const Matrix& mt)
     {
         for (int i = 0; i < mt._size; i++){
-            os << "|" ;
-            os << setw(mt._size * 6) << left;
-            for (int j = 0; j < mt._size; j++)
-                os << mt._array[i][j];
-            os << "|" << endl;
+            os << mt[i];
         }
         return os;
     }
