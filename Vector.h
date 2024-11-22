@@ -1,5 +1,4 @@
-#pragma once   
-
+#pragma once
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -110,21 +109,33 @@ public:
         return res;
     }
 
-    Vector operator+(const Vector& tmp) const;//?
-    Vector operator-(const Vector& tmp) const;//?
-
-    T operator*(const Vector& tmp) {
+    Vector operator+(const T& tmp) const{
+        Vector ans(*this);
+        for (size_t i = 0; i < _size; i++)
+            ans[i] += tmp;
+        return ans;
+    };
+    Vector operator-(const T& tmp) const{
         Vector res(*this);
-        for (int i =0 ; i < _size; i++)
+        for (size_t i = 0; i < _size; i++)
+            res[i] -= tmp;
+        return res;
+    };
+
+    Vector operator*(const T& tmp) const{
+        Vector res(*this);
+        for (size_t i = 0; i < _size; i++)
             res[i] *= tmp;
         return res;
-    }
+    };
+
 
     friend istream& operator>>(istream& in, Vector& vec){
         for (int i = 0; i < vec._size; i++)
             in >> vec._array[i];
         return in;
     }
+<<<<<<< HEAD
     
     friend ostream& operator<<(ostream& os, const Vector& tmp){
         os << "|" ;
@@ -132,6 +143,14 @@ public:
         for (int j = 0; j < mt._size; j++)
             os << tmp._array[j];
         os << "|" << endl;
+=======
+
+    friend std::ostream& operator<<(std::ostream& os, const Vector& tmp){
+        for (int i = 0; i < tmp._size; i++){
+            os << tmp._array[i];
+            if (i + 1 != tmp._size) os << ", ";
+        }
+>>>>>>> 17ec1a5 ( On branch main)
         return os;
     }
 };

@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Vector.h"
 
 template <class T>
@@ -29,36 +28,48 @@ public:
         return Vector<Vector<T>>::operator-(mt);
     }
 
-    Matrix operator*(const Matrix& mt){    
-        Matrix res(this->_size);
-        for (int i = 0; i < this->_size; ++i) {
-            for (int j = i; j < this->_size; ++j) { 
-                for (int k = i; k <= j; ++k) {
-                   res[i][j] += mt[i][k] * this[k][j];
+    Matrix operator*(const Matrix& mt) {
+        if (this->_size != mt._size) {
+            throw ;
+        }
+
+        Matrix result(this->_size);
+
+        for (size_t i = 0; i < this->_size; i++) { 
+            for (size_t j = i; j < this->_size; j++) { 
+                T sum = 0;
+
+                for (size_t k = i; k <= j; k++) {
+                    if ((k - i) < this->_array[i].GetSize() && (j - k) < mt._array[k].GetSize()) {
+                        sum += this->_array[i][k - i] * mt._array[k][j - k];
+                    }
                 }
+
+                result._array[i][j - i] = sum; 
             }
         }
-        return res;
-    }
 
+        return result;
+    }
 
     friend istream& operator>>(istream& in, Matrix& mt)
     {
         for (int i = 0; i < mt._size; i++)
-            for (int j = 0; j < mt._size; j++){
-                in >> mt[i][j];
-                if (i > j && mt[i][j] != 0){
-                    throw "WRONG MATRIX";
-                }
-            }
+            in >> mt._array[i];
         return in;
     }
-    
     friend ostream& operator<<(ostream& os, const Matrix& mt)
     {
+
         for (int i = 0; i < mt._size; i++){
+<<<<<<< HEAD
             os << mt[i];
         }
+=======
+        os << "|";
+        for (size_t j = 0; j < i; j++) os << "0, ";
+        os << mt._array[i] << "|" << endl;}
+>>>>>>> 17ec1a5 ( On branch main)
         return os;
     }
 };
