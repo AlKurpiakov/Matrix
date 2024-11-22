@@ -9,7 +9,7 @@ public:
     {
         for(size_t i = 0; i<n; i++){
             _array[i] = Vector<T>(n-i,i);
-        }
+        } 
     }
     
     Matrix(const Matrix& mt):Vector<Vector<T>>(mt) {}
@@ -52,24 +52,16 @@ public:
         return result;
     }
 
-    friend istream& operator>>(istream& in, Matrix& mt)
-    {
+    friend istream& operator>>(istream& in, Matrix& mt){
         for (int i = 0; i < mt._size; i++)
             in >> mt._array[i];
         return in;
     }
-    friend ostream& operator<<(ostream& os, const Matrix& mt)
-    {
-
+    
+    friend ostream& operator<<(ostream& os, const Matrix& mt){
         for (int i = 0; i < mt._size; i++){
-<<<<<<< HEAD
             os << mt[i];
         }
-=======
-        os << "|";
-        for (size_t j = 0; j < i; j++) os << "0, ";
-        os << mt._array[i] << "|" << endl;}
->>>>>>> 17ec1a5 ( On branch main)
         return os;
     }
 };

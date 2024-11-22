@@ -144,6 +144,7 @@ public:
             os << tmp._array[j];
         os << "|" << endl;
 =======
+    }
 
     friend std::ostream& operator<<(std::ostream& os, const Vector& tmp){
         for (int i = 0; i < tmp._size; i++){
