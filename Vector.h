@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <vector>
+#include <iomanip>
 using namespace std;
 
 template <class T>
@@ -11,13 +11,20 @@ protected:
     size_t _startIndex;
 public:
 
-    Vector(size_t size, size_t startIndex = 0){
-    _size = size;
-    _startIndex = startIndex;
-    _array = new T[size];
-    for(int i = 0; i < tmp._size; i++)
-        _array[i] = 0;
-    
+    Vector() : _size(10), _startIndex(0){
+        _array = new T[_size];
+        for (int i = 0; i < _size; i++)
+            _array[i] = 0;
+        
+    }
+
+    Vector(size_t size, size_t startIndex){
+        _array = new T[size];
+        _size = size;
+        _startIndex = startIndex;
+        for (int i = 0; i < _size; i++){
+            _array[i] = 0;
+        }
     }
 
     Vector(size_t size) : _size(size), _startIndex(0){
@@ -46,7 +53,7 @@ public:
 
     ~Vector(){
         delete [] _array;
-        _array = nulltr;
+        _array = nullptr;
     }
 
     size_t GetSize() const{
@@ -69,13 +76,13 @@ public:
     }
 
     Vector& operator=(const Vector& tmp){
-        _size = vec._size;
-        _startIndex = vec._startIndex;
+        _size = tmp._size;
+        _startIndex = tmp._startIndex;
         delete [] _array;
         _array = nullptr;
         _array = new T[_size];
         for (int i = 0; i < _size; i++){
-            _array[i] = vec._array[i];
+            _array[i] = tmp._array[i];
         }
         return *this;
     }
@@ -88,41 +95,41 @@ public:
         return 1;
     }
 
-    Vector operator+(const T& tmp) const{
+    Vector operator+( T& tmp) {
         Vector ans(*this);
         for (size_t i = 0; i < _size; i++)
             ans[i] += tmp;
         return ans;
     }
 
-    Vector operator-(const T& tmp) const{
+    Vector operator-( T& tmp) {
         Vector ans(*this);
         for (size_t i = 0; i < _size; i++)
             ans[i] -= tmp;
         return ans;
     }
 
-    Vector operator*(const T& tmp) const{
+    Vector operator*( T& tmp) {
         Vector res(*this);
         for (size_t i = 0; i < _size; i++)
             res[i] *= tmp;
         return res;
     }
 
-    Vector operator+(const T& tmp) const{
+    Vector operator+(const T& elem) {
         Vector ans(*this);
         for (size_t i = 0; i < _size; i++)
             ans[i] += tmp;
         return ans;
     };
-    Vector operator-(const T& tmp) const{
+    Vector operator-(const T& elem) {
         Vector res(*this);
         for (size_t i = 0; i < _size; i++)
             res[i] -= tmp;
         return res;
     };
 
-    Vector operator*(const T& tmp) const{
+    Vector operator*(const T& elem) {
         Vector res(*this);
         for (size_t i = 0; i < _size; i++)
             res[i] *= tmp;
@@ -130,28 +137,23 @@ public:
     };
 
 
-    friend istream& operator>>(istream& in, Vector& vec){
+    friend istream& operator>>(istream& in, Vector& vec)
+    {
         for (int i = 0; i < vec._size; i++)
             in >> vec._array[i];
         return in;
     }
-<<<<<<< HEAD
-    
-    friend ostream& operator<<(ostream& os, const Vector& tmp){
-        os << "|" ;
-        os << setw(tmp._size * 6) << left;
-        for (int j = 0; j < mt._size; j++)
-            os << tmp._array[j];
-        os << "|" << endl;
-=======
-    }
 
     friend std::ostream& operator<<(std::ostream& os, const Vector& tmp){
+
         for (int i = 0; i < tmp._size; i++){
             os << tmp._array[i];
-            if (i + 1 != tmp._size) os << ", ";
+            if (i + 1 != tmp._size) os << " ";
         }
->>>>>>> 17ec1a5 ( On branch main)
         return os;
     }
+
+
+   
 };
+

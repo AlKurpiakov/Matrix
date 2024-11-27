@@ -28,9 +28,11 @@ public:
         return Vector<Vector<T>>::operator-(mt);
     }
 
+
+
     Matrix operator*(const Matrix& mt) {
         if (this->_size != mt._size) {
-            throw ;
+            throw std::invalid_argument("Matrices have incompatible sizes for multiplication.");
         }
 
         Matrix result(this->_size);
@@ -52,16 +54,22 @@ public:
         return result;
     }
 
-    friend istream& operator>>(istream& in, Matrix& mt){
+    // ввод / вывод
+    friend istream& operator>>(istream& in, Matrix& mt)
+    {
         for (int i = 0; i < mt._size; i++)
             in >> mt._array[i];
         return in;
     }
-    
-    friend ostream& operator<<(ostream& os, const Matrix& mt){
+    friend ostream& operator<<(ostream& os, const Matrix& mt)
+    {
+
         for (int i = 0; i < mt._size; i++){
-            os << mt[i];
+            os << "|";
+            for (size_t j = 0; j < i; j++) os << "0 ";
+                os << mt._array[i] << "|" << endl;
         }
+
         return os;
     }
 };
