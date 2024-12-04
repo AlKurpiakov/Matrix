@@ -7,8 +7,8 @@ template <class T>
 class Vector{
 protected:
     T* _array;
-    size_t _size;
     size_t _startIndex;
+    size_t _size;
 public:
 
     Vector() : _size(10), _startIndex(0){
@@ -69,6 +69,14 @@ public:
             throw "Out of range";
         }
         return _array[i];
+    }
+
+    Vector<T> GetArray(){
+        Vector<T> tmp(this->_size);
+        for (int i = 0; i < _size; i++){
+            tmp._array[i] = this->_array[i];
+        }
+        return tmp;
     }
 
     T& operator[](size_t i){
@@ -136,6 +144,12 @@ public:
         return res;
     };
 
+    Vector operator/(const T& elem) {
+        Vector res(*this);
+        for (size_t i = 0; i < _size; i++)
+            res[i] /= elem;
+        return res;
+    };
 
     friend istream& operator>>(istream& in, Vector& vec)
     {

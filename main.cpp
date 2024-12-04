@@ -11,6 +11,7 @@ int main(){
     Matrix<int> y(3);
     cin >> x;
     cin >> y;
+    x.PowTo_1();
     cout << x << endl << y << endl;
     cout << x * y;
     return 0;
