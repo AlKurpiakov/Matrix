@@ -71,13 +71,6 @@ public:
         return _array[i];
     }
 
-    Vector<T> GetArray(){
-        Vector<T> tmp(this->_size);
-        for (int i = 0; i < _size; i++){
-            tmp._array[i] = this->_array[i];
-        }
-        return tmp;
-    }
 
     T& operator[](size_t i){
         return _array[i];
@@ -97,7 +90,7 @@ public:
 
     bool operator==(const Vector& tmp){
         if (_size == tmp._size)
-            for (int i = 0; i < size; i++)
+            for (int i = 0; i < _size; i++)
             if (tmp._array[i] != _array[i]) return 0;
         else return 0;
         return 1;
@@ -124,30 +117,18 @@ public:
         return res;
     }
 
-    Vector operator+(const T& elem) {
-        Vector ans(*this);
-        for (size_t i = 0; i < _size; i++)
-            ans[i] += tmp;
-        return ans;
-    };
-    Vector operator-(const T& elem) {
-        Vector res(*this);
-        for (size_t i = 0; i < _size; i++)
-            res[i] -= tmp;
-        return res;
-    };
 
-    Vector operator*(const T& elem) {
+    Vector operator/(const Vector<T>& vec){
         Vector res(*this);
         for (size_t i = 0; i < _size; i++)
-            res[i] *= tmp;
+            res[i] = res[i] / vec._array[i];
         return res;
-    };
+    }
 
-    Vector operator/(const T& elem) {
+    Vector operator/(const T& elem)  {
         Vector res(*this);
         for (size_t i = 0; i < _size; i++)
-            res[i] /= elem;
+            res[i] = res[i]/elem;
         return res;
     };
 
@@ -165,9 +146,5 @@ public:
             if (i + 1 != tmp._size) os << " ";
         }
         return os;
-    }
-
-
-   
+    }   
 };
-
