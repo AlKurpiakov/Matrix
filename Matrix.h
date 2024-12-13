@@ -37,28 +37,19 @@ public:
         }
     }
 
-    const Matrix<double>& PowTo_1(){
+    void PowTo_1(){
         _deg = -1;
         T det;
-        
-        for(int i = 0; i < this->_size; i++)  det *= this->_array[i].GetElem(0);
-
         Vector<T> tmp_vec;
-        Matrix<double> res(this->_size);
-        for (size_t i = 0; i < (this->_size)/2; i++ ){
-            tmp_vec = this->_array[i];
-            this->_array[i] = this->_array[(this->_size) - i - 1];
-            this->_array[(this->_size) - i - 1] = tmp_vec;
-        }
-
+        Matrix<double> res(*this);
         for(size_t i = 0;i < this->_size; i++){
             Vector<double> tmp(this->_array[i].GetSize());
             for (size_t j = 0;j < this->_array[i].GetSize(); j++)
-                tmp[j] = static_cast<double>(this->_array[i].GetElem(j)); 
-            res[i] = tmp;
+                if(i == j){ tmp[j] = 1/res._array[i].GetElem(0);}                
+                else if (i != 0 && i != this->GetSize()) {tmp[j] = res._array[i].GetElem(1)/(res._array[i-1].GetElem(0)*res._array[i].GetElem(0)) ;} 
+            this->_array[i] = tmp;
         }
-        res.operator/(det);
-        this->_array = res._array;
+
     }
 
     Matrix operator*(const Matrix& mt) {
@@ -95,26 +86,14 @@ public:
     friend ostream& operator<<(ostream& os, const Matrix& mt)
     {
 
-        if (mt._deg == 1){
-            for (int i = 0; i < mt._size; i++){
-                os << "|";
-                for (size_t j = 0; j < i; j++) os << "0 ";
-                os << mt._array[i] << "|" << endl;
-            }
+
+        for (int i = 0; i < mt._size; i++){
+            os << "|";
+            for (size_t j = 0; j < i; j++) os << "0 ";
+            os << mt._array[i] << "|" << endl;
         }
-        else{
-            size_t len = 0;
-            for (int i = 0; i < mt._size; i++){
-                os << "|";
-                os << mt._array[i];
-                len = mt._array[i].GetSize();
-                while (len < mt._size){
-                    os << " 0";
-                    len++;    
-                }
-                os << "|" << endl;
-            }
-        }
+        
+
         return os;
     }
 };
