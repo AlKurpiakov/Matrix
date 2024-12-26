@@ -17,9 +17,6 @@ public:
         } 
     }
     
-    T& MatGetElem(size_t i, size_t j){
-        return _array[i].GetElem(j);
-    }
 
     Matrix(const Matrix& mt):Vector<Vector<T>>(mt) {}
 
@@ -48,14 +45,14 @@ public:
         if (row > col) {
             throw out_of_range("Accessing elements below the diagonal is not allowed in an upper triangular matrix.");
         }
-        return _array[row].GetElem(col);
+        return this->_array[row].GetElem(col);
     }
 
     const T& At(size_t row, size_t col) const {
         if (row > col) {
             throw out_of_range("Accessing elements below the diagonal is not allowed in an upper triangular matrix.");
         }
-        return _array[row].GetElem(col);
+        return this->_array[row].GetElem(col);
     }
 
     Matrix operator*(const Matrix& mt) {
@@ -82,22 +79,22 @@ public:
         return result;
     }
     
-    Matrix<T> Inverse() const {
-        if (this->GetSize() == 0) {
+    Matrix<double> Inverse() const {
+        if (this->_size == 0) {
             throw logic_error("Matrix is empty");
         }
 
-        for (size_t i = 0; i < this->GetSize(); ++i) {
+        for (size_t i = 0; i < this->_size; ++i) {
             if (At(i, i) == 0) {
                 throw logic_error("Matrix is singular and cannot be inverted");
             }
         }
 
-        Matrix<T> inverse(this->GetSize());
-
-        for (int i = this->GetSize() - 1; i >= 0; --i) {
-            inverse.At(i, i) = 1 / At(i, i);
-            for (int j = i + 1; j < this->GetSize(); ++j) {
+        Matrix<double> inverse(this->_size);
+        Vector<double> tmp(this->_size);
+        for (int i = this->_size - 1; i >= 0; --i) {
+            tmp[i] = 1 / At(i, i);
+            for (int j = i + 1; j < this->_size; ++j) {
                 T sum = 0;
                 for (int k = i + 1; k <= j; ++k) {
                     sum += At(i, k) * inverse.At(k, j);
