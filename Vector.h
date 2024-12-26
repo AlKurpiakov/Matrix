@@ -6,10 +6,10 @@ using namespace std;
 template <class T>
 class Vector{
 protected:
-    T* _array;
     size_t _startIndex;
     size_t _size;
 public:
+    T* _array;
 
     Vector() : _size(10), _startIndex(0){
         _array = new T[_size];

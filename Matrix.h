@@ -1,11 +1,14 @@
 #pragma once
 #include "Vector.h"
 
+
 template <class T>
 class Matrix: public Vector<Vector<T>>
 {
 private:
     int _deg = 1;
+
+
 public:
     Matrix(size_t n): Vector<Vector<T>>(n, 0)
     {
@@ -14,6 +17,10 @@ public:
         } 
     }
     
+    T& MatGetElem(size_t i, size_t j){
+        return _array[i].GetElem(j);
+    }
+
     Matrix(const Matrix& mt):Vector<Vector<T>>(mt) {}
 
     Matrix(const Vector<Vector<T>>& vv):Vector<Vector<T>>(vv) {}
@@ -37,20 +44,6 @@ public:
         }
     }
 
-    void PowTo_1(){
-        _deg = -1;
-        T det;
-        Vector<T> tmp_vec;
-        Matrix<double> res(*this);
-        for(size_t i = 0;i < this->_size; i++){
-            Vector<double> tmp(this->_array[i].GetSize());
-            for (size_t j = 0;j < this->_array[i].GetSize(); j++)
-                if(i == j){ tmp[j] = 1/res._array[i].GetElem(0);}                
-                else if (i != 0 && i != this->GetSize()) {tmp[j] = res._array[i].GetElem(1)/(res._array[i-1].GetElem(0)*res._array[i].GetElem(0)) ;} 
-            this->_array[i] = tmp;
-        }
-
-    }
 
     Matrix operator*(const Matrix& mt) {
         if (this->_size != mt._size) {
