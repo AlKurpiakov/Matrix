@@ -44,6 +44,19 @@ public:
         }
     }
 
+     T& At(size_t row, size_t col) {
+        if (row > col) {
+            throw out_of_range("Accessing elements below the diagonal is not allowed in an upper triangular matrix.");
+        }
+        return _array[row].GetElem(col);
+    }
+
+    const T& At(size_t row, size_t col) const {
+        if (row > col) {
+            throw out_of_range("Accessing elements below the diagonal is not allowed in an upper triangular matrix.");
+        }
+        return _array[row].GetElem(col);
+    }
 
     Matrix operator*(const Matrix& mt) {
         if (this->_size != mt._size) {
@@ -67,6 +80,33 @@ public:
         }
 
         return result;
+    }
+    
+    Matrix<T> Inverse() const {
+        if (this->GetSize() == 0) {
+            throw logic_error("Matrix is empty");
+        }
+
+        for (size_t i = 0; i < this->GetSize(); ++i) {
+            if (At(i, i) == 0) {
+                throw logic_error("Matrix is singular and cannot be inverted");
+            }
+        }
+
+        Matrix<T> inverse(this->GetSize());
+
+        for (int i = this->GetSize() - 1; i >= 0; --i) {
+            inverse.At(i, i) = 1 / At(i, i);
+            for (int j = i + 1; j < this->GetSize(); ++j) {
+                T sum = 0;
+                for (int k = i + 1; k <= j; ++k) {
+                    sum += At(i, k) * inverse.At(k, j);
+                }
+                inverse.At(i, j) = -sum / At(i, i);
+            }
+        }
+
+        return inverse;
     }
 
     // ввод / вывод
